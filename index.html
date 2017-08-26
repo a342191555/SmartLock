@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>锁</title>
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png"/>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container-fluid">
+    <!--<div class="row">-->
+    <!--<div class="col-xs-12 text-center">-->
+    <!--<h1>Title</h1>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="row text-center">
+        <label>Masterkey:
+            <input type="password" id="key"/>
+        </label>
+    </div>
+    <div class="row text-center">
+        <label>Time:
+            <input type="number" id="time"/>
+        </label>
+    </div>
+    <div class="row text-center">
+        <label>
+            <button class="button btn-primary" id="btn">Generate</button>
+        </label>
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-1 pin">
+            <h1>1</h1>
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+        </div>
+        <div class="col-xs-1 pin">
+            <h1>1</h1>
+        </div>
+    </div>
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        } else {
+            month = '' + month;
+        }
+        var t = '' + date.getFullYear() + ((date.getMonth() + 1 < 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + ((date.getDate() < 10) ? '0' + date.getDate() : date.getDate()) + ((date.getHours() < 10) ? '0' + date.getHours() : date.getHours()) + ((date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes());
+        $("#time").val(t);
+        var cookie = document.cookie;
+        if (cookie != null) {
+            var k = cookie.split('=');
+            k = k[1];
+            $("#key").html(k);
+            var tk = pass(k, t);
+            $(".pin").each(function (idx, div) {
+                $(div).html('<h1>' + tk[idx] + '</h1>');
+            })
+        }
+    });
+    $("#btn").on("click", function () {
+        var cookie = "mk=" + $("#key").val();
+        document.cookie = cookie;
+        var tk = pass($("#key").val(), $("#time").val());
+        $(".pin").each(function (idx, div) {
+            $(div).html('<h1>' + tk[idx] + '</h1>');
+        })
+
+    });
+    var pass = function (var1, var2) {
+        var1 = var1.split('');
+        var2 = var2.split('');
+        var a1 = Array(4), a2 = Array(8), a3 = Array(8), a4 = Array(8);
+
+        for (var n = 0; n < 10; n += 1) {
+            if (var1[n] >= 0) {
+                var1[n] = parseInt(var1[n]);
+            } else {
+                var1[n] = 10;
+            }
+        }
+
+        a4[0] = parseInt(var2[0]);
+        a4[1] = parseInt(var2[1]);
+        a4[2] = parseInt(var2[2]);
+        a4[3] = parseInt(var2[3]);
+        a4[4] = parseInt(var1[8]);
+        a4[5] = parseInt(var1[9]);
+        a4[6] = 0;
+        a4[7] = 1;
+
+        for (var n = 0; n < 8; n++) {
+            a3[n] = var1[n] + a4[n];
+        }
+
+        for (var n = 0; n < 8; n++) {
+            a2[n] = parseInt(var2[n + 4]);
+        }
+
+        var l1 = 0;
+        for (var n = 0; n < 8; n++) {
+            var l2 = 1;
+            for (var m = 0; m < 7 - n; m++) {
+                l2 *= 10;
+            }
+            l1 += a4[n] * l2;
+        }
+
+
+        var l2 = 0;
+        for (var n = 0; n < 8; n++) {
+            var l3 = 1;
+            for (var m = 0; m < 7 - n; m++) {
+                l3 *= 10;
+            }
+            l2 += a2[n] * l3;
+        }
+
+        a3[0] += a3[4];
+        a3[1] += a3[5];
+        a3[2] += a3[6];
+        a3[3] += a3[7];
+
+        a2[0] += a2[4] + a3[0];
+        a2[1] += a2[5] + a3[1];
+        a2[2] += a2[6] + a3[2];
+        a2[3] += a2[7] + a3[3];
+
+        a1[0] = a2[0];
+        a1[1] = a2[1];
+        a1[2] = a2[2];
+        a1[3] = a2[3];
+
+        var i1 = a1[1] ^ a1[2] ^ a1[3];
+        var i2 = a1[0] ^ a1[2] ^ a1[3];
+        var i3 = a1[0] ^ a1[1] ^ a1[3];
+        var i4 = a1[0] ^ a1[1] ^ a1[2];
+        i1 = a1[0] ^ a1[1] ^ i1;
+        i2 = a1[1] ^ a1[2] ^ i2;
+        i3 = a1[2] ^ a1[3] ^ i3;
+        i4 = a1[0] ^ a1[3] ^ i4;
+        i1 = a1[0] ^ a1[2] ^ i1;
+        i2 = a1[1] ^ a1[3] ^ i2;
+        i3 = a1[0] ^ a1[2] ^ i3;
+        i4 = a1[1] ^ a1[3] ^ i4;
+        a1[0] = a1[0] ^ (a1[1] ^ a1[2] ^ a1[3]);
+        var i = a1[0] ^ i1;
+        var j = a1[0] ^ i2;
+        var k = a1[0] ^ i3;
+        var m = a1[0] ^ i4;
+        a1[0] = i;
+        a1[1] = j;
+        a1[2] = k;
+        a1[3] = m;
+        a3[0] += a1[0] * a2[0] + a2[4] & 0xFF;
+        a3[1] += a1[1] * a2[1] + a2[5] & 0xFF;
+        a3[2] += a1[2] * a2[1] + a2[6] & 0xFF;
+        a3[3] += a1[3] * a2[3] + a2[7] & 0xFF;
+        a3[0] = a3[0] & 0xFF;
+        a3[1] = a3[1] & 0xFF;
+        a3[2] = a3[2] & 0xFF;
+        a3[3] = a3[3] & 0xFF;
+        a4[0] += a3[0] * a2[3] + a2[0] & 0xFF;
+        a4[1] += a3[1] * a4[0] + a2[1] & 0xFF;
+        a4[2] += a3[2] * a4[1] + a2[2] & 0xFF;
+        a4[3] += a3[3] * a4[2] + a2[3] & 0xFF;
+        a4[0] = a4[0] & 0xFF;
+        a4[1] = a4[1] & 0xFF;
+        a4[2] = a4[2] & 0xFF;
+        a4[3] = a4[3] & 0xFF;
+        l1 = (((a4[0] << 8 & 0xFFFFFFFF) + a4[1] << 8 & 0xFFFFFFFF) + a4[2] << 8 & 0xFFFFFFFF) + a4[3] + l2 + l1 & 0x4FFFFFF;
+        l1 = l1 + "";
+
+        return new Array(8 - l1.length + 1).join("0") + l1;
+    };
+</script>
+</body>
+</html>
