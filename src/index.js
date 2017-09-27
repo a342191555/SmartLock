@@ -9,10 +9,10 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
     switch (config.runLevel) {
         case "manage":
-            res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08")});
+            res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08"),secure :true});
             break;
         case "prepare":
-            res.cookie("token", secret.get("token"), {expires: new Date("2017-10-08")});
+            res.cookie("token", secret.get("token"), {expires: new Date("2017-10-08"),secure:true});
             break;
         default:
             break;
