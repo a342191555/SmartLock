@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use('/status/*', function (req, res, next) {
-    if (secret.get("manage") != req.cookies.manageKey) {
+    if (secret.get("manageKey") != req.cookies.manage) {
         res.sendStatus(403);
     } else {
         next();
