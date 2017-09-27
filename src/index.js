@@ -33,7 +33,7 @@ app.use('/pin', function (req, res, next) {
         next();
     }
 });
-app.use(express.static('../public'));
+app.use(express.static(__dirname+'/../public'));
 app.get('/pin', function (req, res) {
     //Ensure a GMT+8:00 time
     var date = new Date(new Date().getTime() + (480 + new Date().getTimezoneOffset()) * 60 * 1000 - 10 * 60 * 1000);
@@ -66,4 +66,4 @@ app.post('/status/reset', function (req, res) {
     res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08")});
     res.send("reset success,back to work status");
 });
-app.listen(config.port);
+app.listen(config.port,'127.0.0.1');

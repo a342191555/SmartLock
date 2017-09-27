@@ -1,6 +1,6 @@
 const fs = require('fs');
 exports.get=function (key) {
-    var text = fs.readFileSync('../secret.json', 'utf8');
+    var text = fs.readFileSync(__dirname+'/../secret.json', 'utf8');
     var js = JSON.parse(text);
     if(js.hasOwnProperty(key)){
         return js[key];
@@ -10,11 +10,11 @@ exports.get=function (key) {
 };
 
 exports.set = function (k, value) {
-    var text = fs.readFileSync('../secret.json', 'utf8');
+    var text = fs.readFileSync(__dirname+'/../secret.json', 'utf8');
     var js = JSON.parse(text);
     if (js.hasOwnProperty(k)) {
         js[k] = value;
-        fs.writeFileSync('../secret.json',JSON.stringify(js));
+        fs.writeFileSync(__dirname+'/../secret.json',JSON.stringify(js));
     }
 };
 
