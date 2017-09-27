@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    Current state is: <span id="status">Loding....</span>
+    <br>
+    <button id="prepare">Prepare</button>
+    <button id="work">Work</button>
+    <button id="reset">Reset</button>
+</div>
+<script>
+    $(document).on("ready",function () {
+        $.ajax({
+            url:'/status',
+            success:function (status) {
+                $("#status").html(status);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+        });
+    });
+    $("#prepare").on("click",function () {
+        $.ajax({
+            url:'/status/prepare',
+            method:'POST',
+            success:function (status) {
+                $("#status").html(status);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+        });
+    });
+    $("#work").on("click",function () {
+        $.ajax({
+            url:'/status/work',
+            method:'POST',
+            success:function (status) {
+                $("#status").html(status);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+        });
+    });
+    $("#reset").on("click",function () {
+        $.ajax({
+            url:'/status/reset',
+            method:'POST',
+            success:function (status) {
+                $("#status").html(status);
+            },
+            error:function (err) {
+                console.log(err);
+            }
+        });
+    });
+</script>
+</body>
+</html>
