@@ -9,10 +9,10 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
     switch (config.runLevel) {
         case "manage":
-            res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08"),secure :true});
+            res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08"), secure: true});
             break;
         case "prepare":
-            res.cookie("token", secret.get("token"), {expires: new Date("2017-10-08"),secure:true});
+            res.cookie("token", secret.get("token"), {expires: new Date("2017-10-08"), secure: true});
             break;
         default:
             break;
@@ -33,7 +33,7 @@ app.use('/pin', function (req, res, next) {
         next();
     }
 });
-app.use(express.static(__dirname+'/../public'));
+app.use(express.static(__dirname + '/../public'));
 app.get('/pin', function (req, res) {
     //Ensure a GMT+8:00 time
     var date = new Date(new Date().getTime() + (480 + new Date().getTimezoneOffset()) * 60 * 1000 - 10 * 60 * 1000);
@@ -48,7 +48,7 @@ app.get('/pin', function (req, res) {
     res.send(passwd);
 });
 app.get('/status', function (req, res) {
-    var status =config.runLevel;
+    var status = config.runLevel;
     res.send(status);
 });
 app.post('/status/prepare', function (req, res) {
@@ -61,9 +61,9 @@ app.post('/status/work', function (req, res) {
 });
 app.post('/status/reset', function (req, res) {
     config.runLevel = "work";
-    secret.set("manageKey",secret.random());
-    secret.set("token",secret.random());
-    res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08")});
+    secret.set("manageKey", secret.random());
+    secret.set("token", secret.random());
+    res.cookie("manage", secret.get("manageKey"), {expires: new Date("2017-10-08"), secure: true});
     res.send("reset success,back to work status");
 });
-app.listen(config.port,'127.0.0.1');
+app.listen(config.port, '127.0.0.1');
