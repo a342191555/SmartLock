@@ -22,6 +22,6 @@
   "homepage": "https://github.com/a342191555/SmartLock#readme",
   "dependencies": {
     "cookie-parser": "^1.4.3",
-    "express": "^4.15.5"
+    "express": "^4.18.2"
   }
 }
